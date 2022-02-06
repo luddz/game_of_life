@@ -1,34 +1,36 @@
 import pygame
 import time
-
+import numpy as np
 
 white = (255, 255, 255)
 black = (0, 0, 0)
 
 # Any live cell with fewer than two live neighbours dies, as if by underpopulation.
-def rule_one():
-    return
+# @return: true if it should die and false if it should live
+def rule_one(alive_neighbours:int, is_alive:bool): -> bool
+    return is_alive and alive_neighbours < 2 
 
 # Any live cell with two or three live neighbours lives on to the next generation.
-def rule_two():
-    return
+def rule_two(alive_neighbours:int, is_alive:bool): -> bool
+    return is_alive and 3 >= alive_neighbours >= 2
 
 # Any live cell with more than three live neighbours dies, as if by overpopulation.
-def rule_three():
-    return
+def rule_three(alive_neighbours:int, is_alive:bool): -> bool
+    return is_alive and alive_neighbours > 3
 
 # Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-def rule_four():
-    return
+def rule_four(alive_neighbours:int, is_alive:bool): -> bool
+    return not is_alive and alive_neighbours == 3
 
-def run_simulation(display, clock):
+def run_simulation(display, clock, start_pos:np.array):
     print("Running simmulation")
     simulation_over = False
     x, y = 0, 0
     start_pos_x = 0
     start_pos_y = 0
+    next_matrix = np.zeros(display.get_width(), display.get_height()) # row, column
+    prev_matrix = np.zeros(display.get_width(), display.get_height())
     while not simulation_over:
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN  and event.key == pygame.K_q):
                 simulation_over = True
