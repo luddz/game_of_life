@@ -14,6 +14,7 @@ def run_simulation(display, clock):
     gol = GameOfLife(display.get_width(), display.get_height())
     gol.set_start_pos(start_pos)
 
+    prev_state = np.copy(gol.state)
     while not simulation_over:
         for event in pygame.event.get():
             if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN  and event.key == pygame.K_q):
@@ -21,14 +22,16 @@ def run_simulation(display, clock):
         
         for row_n, row in enumerate(gol.state):
             for column_n, value in enumerate(row):
-                ## Draw the values. 
-                if value == 1:
-                    pygame.draw.rect(display, white, [row_n, column_n, 1, 1])
-                else:
-                    pygame.draw.rect(display, black, [row_n, column_n, 1, 1])
+                 # Only draw a rectangle if the value has changed
+                if prev_state[row_n][column_n] != value: 
+                    if value == 1:
+                        pygame.draw.rect(display, white, [row_n, column_n, 1, 1])
+                    else:
+                        pygame.draw.rect(display, black, [row_n, column_n, 1, 1])
 
         pygame.display.update()
-        clock.tick(10)
+        clock.tick(100)
+        prev_state = np.copy(gol.state)
         gol.run_one_step()
 
     pygame.quit()
