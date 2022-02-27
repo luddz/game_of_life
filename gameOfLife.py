@@ -54,7 +54,7 @@ class GameOfLife:
         self.state = np.zeros((self.width, self.height))
 
 
-class RulesTesting:
+class TestGameOfLife:
     def run_all_tests(self) -> None:
         tests = []
         tests.append(("Empty", self.test_empty_board()))
@@ -144,5 +144,5 @@ class RulesTesting:
 
 
 if __name__ == '__main__':
-    test = RulesTesting()
+    test = TestGameOfLife()
     test.run_all_tests()

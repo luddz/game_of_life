@@ -1,7 +1,6 @@
 import pygame
-import time
 import numpy as np
-from rules import *
+from gameOfLife import *
 
 
 white = (255, 255, 255)
@@ -11,23 +10,16 @@ def run_simulation(display, clock):
     print("Running simmulation")
     simulation_over = False
 
-    start_pos = np.array([(300,300), (300,301), (300,302)])
-    # start_pos = np.array([(4, 4), (4, 5), (4, 6)])
-    next_matrix = np.zeros((display.get_width(), display.get_height())) # row, column
-    prev_matrix = np.zeros((display.get_width(), display.get_height())) # row, column
-    
-    # Setup the start state of the game.
-    for pos in start_pos:
-        prev_matrix[pos[0]][pos[1]] = 1
+    start_pos = [ (300,300), (300,301), (300,302) ]
+    gol = GameOfLife(display.get_width(), display.get_height())
+    gol.set_start_pos(start_pos)
 
-    print(prev_matrix)
-    
     while not simulation_over:
         for event in pygame.event.get():
             if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN  and event.key == pygame.K_q):
                 simulation_over = True
         
-        for row_n, row in enumerate(prev_matrix):
+        for row_n, row in enumerate(gol.state):
             for column_n, value in enumerate(row):
                 ## Draw the values. 
                 if value == 1:
@@ -35,11 +27,9 @@ def run_simulation(display, clock):
                 else:
                     pygame.draw.rect(display, black, [row_n, column_n, 1, 1])
 
-                next_matrix[row_n][column_n] = 1 if check_rules(prev_matrix, (row_n, column_n)) else 0
-        # print(prev_matrix)
         pygame.display.update()
         clock.tick(10)
-        prev_matrix = next_matrix
+        gol.run_one_step()
 
     pygame.quit()
     quit()
