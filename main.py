@@ -2,7 +2,6 @@ import pygame
 import numpy as np
 from gameOfLife import *
 
-
 white = (255, 255, 255)
 black = (0, 0, 0)
 
@@ -20,6 +19,7 @@ def run_simulation(display, clock):
             if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN  and event.key == pygame.K_q):
                 simulation_over = True
         
+        # TODO: Change so it only checks areas that is around live pixels.
         for row_n, row in enumerate(gol.state):
             for column_n, value in enumerate(row):
                  # Only draw a rectangle if the value has changed
@@ -44,7 +44,7 @@ def setup_simulation():
     display_height = 800
 
     display = pygame.display.set_mode((display_width, display_height))
-
+    
     pygame.display.set_caption("Game of life simulation")
     clock = pygame.time.Clock()
     return display, clock
